@@ -7,18 +7,13 @@ import redis
 conn = redis.Redis(db=0)
 
 while 1:
-    # This is the piped time deltas from diff.py
+    
     d = stdin.readline()
-    # The time diff is in the key 'delta'
-    diff = json.loads(d).get('delta')
-    print diff
+    # Twe use delta as the primary key
+    delt = json.loads(d).get('delta')
+    print delt
 
-    # Add it to the database; have it expire after 120 seconds (2 mins). This
-    # 'expiration' time makes a big impact on the smoothness of the function we
-    # get. I found after some experimentation that 120 seconds yields a nice and
-    # smooth function that still has variability.
-    conn.setex(str(uuid1()), diff, 120)
+    conn.setex(str(uuid1()), delt, 120) #again, I used Python's unique ID generator
 
-    # Print to stdout as a confirmation--this doesn't do anything functional.
-    print(json.dumps({'delta': diff}))
+    print(json.dumps({'delta': delt})) #the dump is needed because it will be piped
     stdout.flush()

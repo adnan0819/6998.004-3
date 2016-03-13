@@ -99,3 +99,7 @@ Output: {"p": 0.5, "tag": "selfie"}
 **Alert Parameters and Why I used Entropy (SIGNIFICANCE)**
 
  I have set up the threshold for the distribution as 1.5 because in most cases we see that it is around 0.2 to 1.0 across the visible tags (10 in total). However it should be noted that sometimes, some tags do not show up like "fire" or "earthquake" - leading to a more uniform distribution  i.e. lower entropy. As we move higher and uncommon ones come in, we will see the entropy go high because even though the selfie type hashtags will dominate, there will be few #fire, #earthquake etc. consequently this will give rise to the entropy Based on this idea, I have made the alerting system that outputs in stdout and also the web page. 
+
+**Extra Note**
+
+Note that my implementation of histogram is different from the one shown in class.This is because I needed a format like {{bin:flood,count:2}, {bin:selfie, count:120}} unlike the one in class where it would be {{flood,2},{selfie,120}}. This is to facilitate the D3 visualization. 
