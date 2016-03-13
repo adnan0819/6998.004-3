@@ -1,0 +1,105 @@
+<html>
+
+<head>
+    
+  <link rel="stylesheet" href="jquery-ui.min.css">
+  <link rel="stylesheet" type="text/css" href="bootstrap.css">
+  <script type="text/javascript" src="jquery-1.11.3.min.js"></script>  
+  <!-- for JQueryUI -->
+  <script src="jquery.js"></script>
+  <script src="jquery-ui.min.js"></script>
+  <!-- Button callback for jQueryUI -->
+  <script>
+  $(function() {
+    $( "#check" ).button();
+    $( "#format" ).buttonset();
+  });
+  </script>
+ <style>
+  #format { margin-top: 2em; }
+  </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Calamity Behavior by Instagram by Adnan Firoze (UNI: af2728)</h1>
+        <h1>--------------------------------------------------------------------------</h1>
+        
+        <h1>The Distribution in the System is Currently visualized below.
+        Reload the page to see update. 
+        </strong></h1>
+
+        
+
+        <form onsubmit="setTimeout(ws.onmessage(), $( "#slider-range-min" ).slider( "value" ))" * 1000>
+
+<div id="format">
+ 
+
+  </br>
+  <center>   <input type="button" class="btn btn-primary" id="theButton" value="GO!"/> </center> 
+
+</div>
+  </form>
+ 
+        <!-- making it pretty by having a table -->
+        <table id="tbl" style="width:120%">
+            <tr>
+              <th>Container text </th>
+              
+            </tr>
+          
+         <script>
+         var button = document.getElementById("theButton");
+         button.onclick = function() {
+          document.getElementById("theButton").value= "... It's running ...";
+
+         var msg=0;
+         var flag=0;
+         var makeRow=1;
+          var tr;
+         
+      //Connectng to the websocket here
+      var ws = new WebSocket('ws://localhost:8080/');
+      ws.onopen = function() {
+                console.log("opened");
+                //making a new row
+                tr = tbl.insertRow();
+               
+
+      };
+      ws.onclose = function() {
+                console.log("closed");
+      };
+      ws.onmessage = function(event) {
+     
+        console.log(event.data);
+        var hash=event.data;
+
+    tr = tbl.insertRow();   
+    //Logic for creating rows and cells          
+    console.log("msg: ");
+    console.log(msg);
+    var td = tr.insertCell();
+    td.appendChild(document.createTextNode(event.data));
+    td.style.border = '1px solid black';
+    msg++;
+  
+    if(msg%1==0) makeRow=1;
+    else makeRow=0;
+    //console.log("in if");
+
+
+ 
+}}; 
+
+
+    </script>
+    </table>
+
+</div>
+   
+</body>
+
+</html>
+
