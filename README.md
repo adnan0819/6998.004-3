@@ -1,6 +1,6 @@
 # COMSE6998.004 Assignment 3
 
-# NYC Fire Alert Powered by Instagram 
+# Calamity Alert Powered by Instagram 
 
 # - Adnan Firoze (af2728)
 # (Dual MS in CS & Journalism)
