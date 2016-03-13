@@ -1,18 +1,13 @@
-# api.py
-# Jonah Smith
-# Assignment 3, Storytelling with Streaming Data, Spring 2016
-#
-# This script connects to a Redis database (table 0 with time diffs between
-# events, table 1 with a distribution over articles), and defines an API to
-# access certain calculations, including the rate, the histogram, the entropy,
-# and the probability of a given message.
-
 from flask import Flask, request
 from flask.ext.cors import CORS
 import json
 import calculations
 
-app = Flask(__name__)
+# This script is to create the API based on the records in Redis. Note that I have 
+# stored the deltas in db=0 and the distributions in db=1
+
+
+app = Flask(__name__) # thanks to PROF. DEWAR, THIS TOOL TOOK CARE OF CORS ISSUE which he helped me via email. 
 CORS(app)
 
 @app.after_request
@@ -20,10 +15,17 @@ def after_request(response):
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 
+@app.route('/probability')
+def get_probability():
+    msg = request.args.get('tag') #this is the implementation of the GET request using the API
+    prob = calculations.probability(msg)
+    response = { 'tag': msg, 'p': prob }
+    return json.dumps(response)
+
 @app.route('/rate')
 def get_rate():
     rate = calculations.rate()
-    return json.dumps( {'avg_rate': rate})
+    return json.dumps( {'rate for now ': rate})
 
 
 @app.route('/histogram')
@@ -36,15 +38,6 @@ def get_histogram():
 def get_entropy():
     entropy = calculations.entropy()
     return json.dumps({'entropy': entropy})
-
-
-@app.route('/probability')
-def get_probability():
-    msg = request.args.get('message')
-    prob = calculations.probability(msg)
-    response = { 'message': msg, 'p': prob }
-    return json.dumps(response)
-
 
 
 

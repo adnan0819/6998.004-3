@@ -6,48 +6,28 @@ import json
 from time import sleep
 import calculations
 
-# This is where we set our rate threshold. The process for deriving it is
-# described in the comments above.
-RATE_THRESHOLD = 100
+# I have set up the threshold for the distribution as 1.5 because in most cases we see that
+# it is around 0.2 to 1.0 across the visible tags (10 in total). However it should be noted that
+# sometimes, some tags do not show up like "fire" or "earthquake" - leading to a more uniform distribution 
+# i.e. lower entropy. As we move higher and uncommon ones come in, we will see the entropy go high because
+# even though the selfie type hashtags will dominate, there will be few #fire, #earthquake etc. 
+# consequently this will give rise to the entropy Based on this idea, I have made the alerting system
+# that outputs in stdout and also the web page. 
 
-ENT_THRESHOLD = 0.2 
+THRESH = 1.5 #the entropy threshold
 
 while True:
    
-    entropy = calculations.entropy()
-    rate = calculations.rate()
-
-    print entropy
-
-        # Dump the entropy and rate to stdout and flush the stdout so we don't end
-        # up with a buffer.
+    entropy = calculations.entropy() #using helper script for calculation
+     
+    uncommonEntropy=False #this is a flag so that once we find an alert we do not loop through it. We will switch it to false again in the end.
     
-        # Rest of one second. This will give us a nice smooth function for the rate
-        # and entropy values.
- 
-
-    # This is a variable that will keep track of whether the system is currently
-    # in an anomalous period or not. This is the main mechanism for preventing
-    # duplicate messages during a period of time with anomalous behavior.
-    uncommonRate=False
-    uncommonEntropy=False
-
-
-    # Read in the input from stdin, which is a JSON with a key 'avg' containing
-    # the average for the values in the DB (which have been there for < 120
-    # seconds)
-    
-    # Now, if we find that the current average is less than the threshold,
-    # we are experiencing anomalous behavior.
-    if entropy > ENT_THRESHOLD :
-        # This is entered when the previous reading was not anomalous.
-            uncommonEntropy=True
+    if entropy > THRESH :
+            uncommonEntropy=True #  making the flag true now
             print "System is slowing down and tags are becoming uniform. Possible calamity alert!"
-            # As always, make sure to flush the stdout to prevent Python from
-            # keeping a buffer.
             stdout.flush()
-            uncommonEntropy=False
-            sleep(3)
+            uncommonEntropy=False #after the alert is done, we switch back.
+            sleep(3) #I picked 3 seconds to sleep
 
 
     
